@@ -1,0 +1,252 @@
+.page{
+  margin: 20px;
+  /* size: 100vh; */
+  min-height: calc(100vh - 170px);
+}
+
+.App {
+  font-family: 'Roboto Condensed', sans-serif;
+  size: 100vh;
+}
+
+.logo{
+  width: 46px;
+  height: 46px;
+}
+
+
+.Navbar{
+  background-color: #282c34;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+}
+
+
+.Footer{
+  background-color: #282c34;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  /* width: 100%; */
+  height: 50px;
+}
+
+.Navbar, a{
+  color: white;
+}
+
+/*--------------- GENERAL----------------- */
+
+
+a{
+  text-decoration: none;
+}
+
+ul{
+  list-style: none;
+}
+
+
+/* ----------------------- HOME -------------------------*/
+.item{
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+}
+
+.card{
+  border: gray 1px solid;
+  padding: 20px;
+}
+
+.read-more{
+  background-color: #23a358;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.read-more:hover{
+  opacity: 60%;
+  transition: 0.4s ease-in-out;
+}
+
+/* -----------------------MOVIE PAGE -------------------------*/
+
+.movie-image{
+  width: 200px;
+}
+
+
+.info-section{
+  background-color: #282c34;
+  padding: 20px;
+  color: whitesmoke;
+  display: flex;
+  font-size: 24px;
+}
+
+.left-side{
+  margin-left: 30px;
+  text-align: center;
+}
+
+.movie-details-image{
+  width: 340px;
+}
+
+.buy-section{
+  text-align: center;
+}
+
+.times{
+  margin-top: 30px;
+}
+
+.time-item{
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 26px;
+  margin: 0px 30px;
+  background-color: white;
+  border: 1px solid #282c34;
+  cursor: pointer;
+}
+
+
+.time-item:hover{
+  background-color: rgb(126, 235, 116);
+  transition: 0.3s ease-in-out;
+}
+
+
+
+/* -----------------------LOG IN PAGE--------------------------- */
+.login-form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-inputs{
+  margin: 10px 0px;
+}
+
+.form-input{
+  padding: 10px 20px 10px 6px;
+  width: 300px;
+  border-radius: 4px;
+  border: #282c34 1px solid;
+  margin: 20px 0px;
+  font-size: 16px;
+}
+
+.error{
+  color: rgb(230, 40, 40);
+}
+
+.success{
+  color:rgb(33, 160, 33);
+}
+
+.login-btn{
+  background-color: rgb(54, 179, 54);
+  font-family: inherit;
+  color: whitesmoke;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 330px;
+  border: none;
+}
+
+.login-btn:hover{
+  opacity: 50%;
+  transition: 0.3s ease-in-out;
+}
+
+.reg-link{
+  color: #1147b3;
+}
+
+
+
+/* ---------------- CINEMA HALL ------------------ */
+.seat{
+  background-color: rgb(134, 184, 58);
+  border-radius: 4px;
+  padding: 10px;
+  width: 1rem;
+  margin: 10px; 
+
+  text-align: center;
+}
+
+.seat:hover{
+  opacity: 60%;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.seats-row{
+  display: inline-flex;
+  /* flex-direction: column; */
+}
+
+
+.disabled{
+  background-color: #757575;
+  border-radius: 4px;
+  padding: 10px;
+  width: 1rem;
+  margin: 10px; 
+
+  text-align: center;
+
+  pointer-events: none;
+}
+
+.screen{
+  background-color: #757575;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  padding: 14px 0px;
+  margin-bottom: 16px;
+}
+
+
+.reserv-info{
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.selected{
+  background-color: #007ccf;
+  border-radius: 4px;
+  padding: 10px;
+  width: 1rem;
+  margin: 10px; 
+
+  text-align: center;
+}
+
+
+.summary-item{
+  margin-top: 20px;
+}
+
+
+.checkout-container{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
