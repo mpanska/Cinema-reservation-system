@@ -13,6 +13,7 @@ function Home(props) {
     });
   }, []);
 
+  console.log(movies)
 
   return (
       <div className="page">
@@ -25,8 +26,12 @@ function Home(props) {
                 movie =>
                   <div key = {movie.id} className="card"> 
                     <img src={placeholder} alt="film-img" className="movie-image"/>
-                    <div style={{fontSize: "18px", fontWeight: "bold", marginBottom: "10px"}}>{movie.name}</div>
-                    <div style={{color: "gray"}}>{movie.releaseDate}</div>
+                    <div style={{fontSize: "18px", fontWeight: "bold", marginBottom: "10px"}}>
+                      {movie.name}
+                    </div>
+                    <div style={{color: "gray"}}>
+                      {movie.releaseDate}
+                    </div>
                     <Link  to={`/movies/${movie.id}`}><div className="read-more">Read more</div></Link>
                   </div>
               )

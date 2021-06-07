@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Profile from './components/Profile';
 import MoviePage from "./components/MoviePage";
 import Register from "./components/Register";
+import Checkout from "./components/Checkout";
 import SeatsReservation from "./components/SeatsReservation";
 
 function App() {
@@ -26,6 +27,9 @@ function App() {
 
           <Route path='/movies/:movieId' exact component={MoviePage} />
           <Route path='/reservation/:movieId' exact component={SeatsReservation} />
+
+
+          <Route path='/checkout' exact component={Checkout} />
 
         </Switch>
       </Router>

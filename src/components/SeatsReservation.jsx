@@ -1,5 +1,7 @@
-import { useState, useEffect, Component } from 'react';
+import { useState, useEffect } from 'react';
 import movieService from '../services/movieService';
+import { Link } from "react-router-dom";
+import AuthService from "../services/authService";
 
 function SeatsReservation(props) {
 
@@ -7,15 +9,18 @@ function SeatsReservation(props) {
   const [ seats, setSeats ] = useState([]);
   const [ movie, setMovie ] = useState([]);
   const [ selectedSeats, setSelectedSeats ] = useState([]);
+  const [ ticketTypes, setTicketTypes ] = useState([]);
 
   const movieId = props.match.params.movieId;
-  
+  const currentUser = AuthService.getCurrentUser();
 
   useEffect(() => {
     getAllShow();
     getAllSeats();
     getAllMovie();
+    getTicketTypes();
   }, []);
+
 
   const getAllMovie = async () => {
     await movieService.getMovie(movieId).then(
@@ -35,14 +40,17 @@ function SeatsReservation(props) {
     );
   }
 
+  const getTicketTypes = async () => {
+    await movieService.getTicketTypes().then(
+      response => setTicketTypes(response.data)
+    );
+  }
+
 
   const getSeatData = (id, event) =>{ 
     const seat = seats.filter(s => {
       return s.id === id;
     })
-
-    console.log(event.target.classList);
-   // console.log(seat);
 
     if(selectedSeats.indexOf(seat[0]) == -1) {
       setSelectedSeats(arr => [...arr, seat[0]])
@@ -50,23 +58,77 @@ function SeatsReservation(props) {
     }
     else{
       setSelectedSeats(selectedSeats.filter(item => item.id !== id))
-      
       event.target.classList.remove('selected')
     }
-
- 
-
-    // if(!event.target.classList.contains('selected')){
-    //   event.target.classList.add('selected')
-    // }
-    // else{
-    //   event.target.classList.remove('selected')
-    // }
-    // console.log("selectedSeats");
-    // console.log(selectedSeats);
     return seat;
   }
 
+  const calculateTotal = () => {
+    var sum = 0
+
+    for(let i = 0; i < selectedSeats.length; i++){
+      if(localStorage.getItem('type') == 'normal'){
+        sum += ticketTypes[0].price
+      }
+      else if(localStorage.getItem('type') == 'student'){
+        sum += ticketTypes[1].price
+      }
+    }
+    return sum
+  }
+
+
+  const getNextElem = (currentItem) => {
+    const currentIndex = seats.indexOf(currentItem);
+    const nextIndex = (currentIndex + 1) % seats.length;
+    return seats[nextIndex];
+  }
+  
+  const renderRows = () => {
+    var rows = [];
+    seats.forEach(seat => { if(!rows.includes(seat.row)) rows.push(seat.row) })
+
+    var obj = {}
+    rows.forEach(function(value) {
+      var temp = []
+      for(let i = 0; i < seats.length; i++){
+        if(value === seats[i].row){
+          temp.push(seats[i])
+        }
+      }
+      obj[value] = temp;
+    });
+
+    return(
+      <div className="">
+        {
+          rows.map((row) => 
+          <div className={`row ${row}`} key={row}>
+            <div className="row-name"> {row} </div>
+            
+            <div className="seats"> 
+              {obj[row].map( 
+                seat => (
+                  <div 
+                    className={seat.available ? `seat ${seat.id} ` : 'disabled'} 
+                    onClick={(event) => (getSeatData(seat.id, event))}
+                    style={seat.position + 2 == getNextElem(seat).position ? {marginRight: '40px'} : {}}
+                  >
+                    {seat.number}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  const handleSelectChange = (e) => {
+    localStorage.setItem('type', e.target.value)
+    window.location.reload();
+  }
 
 
   return (
@@ -76,54 +138,50 @@ function SeatsReservation(props) {
       <div className="">
         <div className="reserv-info">
           <div>Movie: {movie.name}</div>
-          <div>Ticket price: </div>
+          <div>Ticket price: {
+              ticketTypes.map( 
+                (ticket) => 
+                <span key={ticket.id}>
+                  <br/>{ticket.name} - {ticket.price}$ 
+                </span> 
+              )
+            }<br/>
+            <select value={localStorage.getItem('type')} onChange={(e) => (handleSelectChange(e))}>
+              <option value="normal">Normal</option>
+              <option value="student">Student</option>
+            </select>
+            </div>
         </div>
 
-          <div className="screen">Screen</div>
-          {
-            seats.map(
-              (seat) =>
-              <div key = {seat.id} className="seats-row"> 
-                    {/* <div>
-                      {seat.number == 10 ? `${seat.number}\n\n` : seat.number}
-                    </div> */}
-                <div className="row">
-                  {/* {seat.row} */}
-                  <div className={seat.available ? `seat ${seat.id} ` : 'disabled'} onClick={(event) => (getSeatData(seat.id, event))} >
-                    {seat.number}
-                  </div>
-                </div>
-              </div>
-            )
-          }
-          
+        <div className="screen">Screen</div>
+        <div className="hall">{ renderRows() }</div>
+        <div className="reserv-info">
+          <div className="summary-item">
+            Total: {calculateTotal()}$
+          </div>
+        </div>
 
-            <div className="reserv-info">
-              <div className="summary-item">
-                Seats selected: {
-                  selectedSeats.map(
-                    s => <div key = {s.id}>{` seat: ${s.number} - row: ${s.row.toUpperCase()} ;`}</div>
-                  )
-                }
-              </div>
-              <div className="summary-item">
-                Total: {}
-              </div>
-            </div>
-            
-            <div className="checkout-container">
+
+        {currentUser ? (
+          <div className="checkout-container" style={selectedSeats.length == 0?  {pointerEvents: 'none'} : {}} > 
+            <Link  to={{
+              pathname:"/checkout", 
+              state:{ 
+                selectedSeats: selectedSeats,
+                total: parseInt(calculateTotal())
+              }}
+            }>
               <button className="login-btn" style={{padding: "10px", borderRadius: "6px"}}>To checkout</button>
+            </Link>
+          </div>
+          ) : ( 
+            <div className="checkout-container">
+              <button className="login-btn" style={{padding: "10px", borderRadius: "6px", backgroundColor: 'gray'}}>You have to log in to reserve tickets</button>
             </div>
-          
-            
+        )}
         </div>
       </div>
   );
 }
 
 export default SeatsReservation;
-
-
-
-
-
