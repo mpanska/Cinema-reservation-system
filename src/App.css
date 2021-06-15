@@ -14,7 +14,6 @@
   height: 46px;
 }
 
-
 .Navbar{
   background-color: #282c34;
   display: flex;
@@ -267,4 +266,40 @@ ul{
 
 .row:nth-child(4n + 1) {
   margin: 26px 0px;
+}
+
+
+/*----------------- INVOICE PAGE---------------- */
+
+.centered-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ticket-table{
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+.ticket-table td, .ticket-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+
+  padding: 0px 40px;
+}
+
+.ticket-table tr:nth-child(even){
+  background-color: #f2f2f2;
+}
+
+
+.ticket-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
 }

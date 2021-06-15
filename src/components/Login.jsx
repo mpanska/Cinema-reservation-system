@@ -4,7 +4,6 @@ import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { Link } from "react-router-dom";
 import AuthService from "../services/authService";
-import Register from "./Register";
 
 const required = value => {
   if (!value) {
@@ -78,16 +77,15 @@ export default class Login extends Component {
   render() {
     return (
       <div className="login-form page">
-
         <h2>Log in to your account</h2>
 
         <Form onSubmit={this.handleLogin} ref={c => { this.form = c; }}>
             <div className="form-inputs">
                 <Input type="text" className="form-input" name="username" placeholder="Username"
-                    value={this.state.username} onChange={this.onChangeUsername} validations={[required]}
+                  value={this.state.username} onChange={this.onChangeUsername} validations={[required]}
                 />
                 <Input type="password" className="form-input" name="password" placeholder="Password"
-                    value={this.state.password} onChange={this.onChangePassword} validations={[required]}
+                  value={this.state.password} onChange={this.onChangePassword} validations={[required]}
                 />
 
                 <p>Don't have an account yet? <Link className="reg-link" to="/register">Register here</Link> </p>

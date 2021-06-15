@@ -1,7 +1,7 @@
 function Footer() {
     return (
       <div className="Footer">
-        <h4>© 2021 Cinema Site</h4>
+        <p style={{'fontSize': '18px'}}>© 2021 Cinema Site</p>
       </div>
     );
 }

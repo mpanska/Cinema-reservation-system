@@ -14,6 +14,24 @@ function SeatsReservation(props) {
   const movieId = props.match.params.movieId;
   const currentUser = AuthService.getCurrentUser();
 
+  const getPrice = () => {
+    if(localStorage.getItem("type") === "student"){
+      return 14;
+    }
+    else{
+      return 18;
+    }
+  }
+
+  const getTicketTypeId = () => {
+    if(localStorage.getItem("type") === "student"){
+      return 2;
+    }
+    else{
+      return 1;
+    }
+  }
+
   useEffect(() => {
     getAllShow();
     getAllSeats();
@@ -52,7 +70,7 @@ function SeatsReservation(props) {
       return s.id === id;
     })
 
-    if(selectedSeats.indexOf(seat[0]) == -1) {
+    if(selectedSeats.indexOf(seat[0]) === -1) {
       setSelectedSeats(arr => [...arr, seat[0]])
       event.target.classList.add('selected')
     }
@@ -67,10 +85,10 @@ function SeatsReservation(props) {
     var sum = 0
 
     for(let i = 0; i < selectedSeats.length; i++){
-      if(localStorage.getItem('type') == 'normal'){
+      if(localStorage.getItem('type') === 'normal'){
         sum += ticketTypes[0].price
       }
-      else if(localStorage.getItem('type') == 'student'){
+      else if(localStorage.getItem('type') === 'student'){
         sum += ticketTypes[1].price
       }
     }
@@ -112,7 +130,7 @@ function SeatsReservation(props) {
                   <div 
                     className={seat.available ? `seat ${seat.id} ` : 'disabled'} 
                     onClick={(event) => (getSeatData(seat.id, event))}
-                    style={seat.position + 2 == getNextElem(seat).position ? {marginRight: '40px'} : {}}
+                    style={seat.position + 2 === getNextElem(seat).position ? {marginRight: '40px'} : {}}
                   >
                     {seat.number}
                   </div>
@@ -163,12 +181,15 @@ function SeatsReservation(props) {
 
 
         {currentUser ? (
-          <div className="checkout-container" style={selectedSeats.length == 0?  {pointerEvents: 'none'} : {}} > 
+          <div className="checkout-container" style={selectedSeats.length === 0?  {pointerEvents: 'none'} : {}} > 
             <Link  to={{
               pathname:"/checkout", 
               state:{ 
                 selectedSeats: selectedSeats,
-                total: parseInt(calculateTotal())
+                total: parseInt(calculateTotal()),
+                price: parseInt(getPrice()),
+                showId: parseInt(show.id),
+                ticketTypeId: parseInt(getTicketTypeId())
               }}
             }>
               <button className="login-btn" style={{padding: "10px", borderRadius: "6px"}}>To checkout</button>

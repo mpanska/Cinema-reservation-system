@@ -13,9 +13,6 @@ class AuthService {
         if (response.data.jwt) {
           localStorage.setItem("user", JSON.stringify(response.data));
         }
-        // console.log("response.data")
-        // console.log(response.data)
-        // console.log(localStorage.getItem("user"))
         return response.data;
       });
   }

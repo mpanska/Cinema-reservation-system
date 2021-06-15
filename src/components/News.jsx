@@ -1,5 +1,3 @@
-
-
 function News() {
     return (
       <div className="page">
