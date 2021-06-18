@@ -20,12 +20,10 @@ export default class Profile extends Component {
   render() {
     const { currentUser } = this.state;
 
-
-
     return (
       <div className="page">
-          <h3>{currentUser.username} </h3>
-          <button onClick={this.logOut}>Log out</button>
+        <h3>{currentUser.username} </h3>
+        <button className="login-btn" style={{padding: '10px', borderRadius: '10px'}} onClick={this.logOut}>Log out</button>
       </div>
     );
   }

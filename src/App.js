@@ -3,7 +3,6 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
-import News from './components/News';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import MoviePage from "./components/MoviePage";
@@ -20,8 +19,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/' exact component={Home} />
-          <Route path='/news' exact component={News} />
-          
+
           <Route path='/log-in' exact component={Login} />
           <Route path='/register' exact component={Register} />
           <Route path='/profile' exact component={Profile} />

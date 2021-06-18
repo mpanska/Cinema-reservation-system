@@ -1,50 +1,60 @@
-import PaypalExpressBtn from 'react-paypal-express-checkout';
-import React from 'react'
+import { useRef, useEffect } from "react";
+import { useHistory} from "react-router-dom";
 
-class Paypal extends React.Component {
-    render() {
-        const onSuccess = (payment) => {
-            console.log("The payment was succeeded!", payment);
-            this.props.onSuccess(payment);
-        }
+export default function Paypal(props) {
+    const total = props.total;
+    const selectedSeats = props.state?.selectedSeats
+    const price = props.state.price
+    const showId = props.state.showId
+    const ticketTypeId = props.state.ticketTypeId
+    const ticketId = props.state.ticketId
 
-        const onCancel = (data) => {
-            console.log('The payment was cancelled!', data);
-        }
 
-        const onError = (err) => {
-            console.log("Error!", err);
-            // Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
-            // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
-        }
+    const paypal = useRef();
+    let history = useHistory();
 
-        let env = 'sandbox'; // you can set here to 'production' for production
-        let currency = 'USD'; // or you can set this value from your props or state
-        let total = this.props.toPay; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
-        // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
+    useEffect(() => {
+        window.paypal.Buttons({
+            createOrder: (data, actions, err) => {
+                return actions.order.create({
+                intent: "CAPTURE",
+                purchase_units: [{
+                    description: "Tickets",
+                    amount: {
+                        currency_code: "USD",
+                        value: total,
+                    },
+                },],
+            });
+        },
+        onApprove: async (data, actions) => {
+            const order = await actions.order.capture();
+          
+            history.push({
+                pathname: "/success", 
+                state: {
+                    selectedSeats: selectedSeats,
+                    total: total,
+                    price: price,
+                    showId: showId,
+                    ticketTypeId: ticketTypeId,
+                    ticketId: ticketId,
+                    payed: true,
+                    order: order
+                }
+            });
+            window.location.reload();
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+      }).render(paypal.current);
+    }, []);
 
-        const client = {
-            sandbox: 'AUWUD5HZ1LIki-QUZ2xfnZIazimMnmYjKFlEc0fbTz224-TkwaaUW7bgw-z_FNlQQ3pfnVrUSJtiyBmU',
-            production: 'YOUR-PRODUCTION-APP-ID',
-        }
-        // In order to get production's app-ID, you will have to send your app to Paypal for approval first
-        // For sandbox app-ID (after logging into your developer account, please locate the "REST API apps" section, click "Create App"):
-        //   => https://developer.paypal.com/docs/classic/lifecycle/sb_credentials/
-        // For production app-ID:
-        //   => https://developer.paypal.com/docs/classic/lifecycle/goingLive/
 
-        // NB. You can also have many Paypal express checkout buttons on page, just pass in the correct amount and they will work!
-        return (
-            <PaypalExpressBtn
-                env={env}
-                client={client}
-                currency={currency}
-                total={total}
-                onError={onError}
-                onSuccess={onSuccess}
-                onCancel={onCancel}
-                style={{ size:'large'}}
-            />
-        );
-    }
-}export default Paypal
+    return (
+        <div style={{width: '328px', height: '400px'}}>
+            <div ref={paypal} style={{borderRadius: '20px'}}></div>
+        </div>
+    );
+}

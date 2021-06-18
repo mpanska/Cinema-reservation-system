@@ -37,31 +37,31 @@ function SeatsReservation(props) {
     getAllSeats();
     getAllMovie();
     getTicketTypes();
-  }, []);
+  }, [])
 
 
   const getAllMovie = async () => {
     await movieService.getMovie(movieId).then(
       response => setMovie(response.data)
-    );
+    )
   } 
 
   const getAllShow = async () => {
     await movieService.getShow(movieId).then(
       response => setShow(response.data)
-    );
+    )
   }
 
   const getAllSeats = async () => {
     await movieService.getShow(movieId).then(
       response => setSeats(response.data.seats)
-    );
+    )
   }
 
   const getTicketTypes = async () => {
     await movieService.getTicketTypes().then(
       response => setTicketTypes(response.data)
-    );
+    )
   }
 
 
@@ -91,6 +91,9 @@ function SeatsReservation(props) {
       else if(localStorage.getItem('type') === 'student'){
         sum += ticketTypes[1].price
       }
+      else{
+        sum += ticketTypes[0].price
+      }
     }
     return sum
   }
@@ -116,6 +119,9 @@ function SeatsReservation(props) {
       }
       obj[value] = temp;
     });
+
+
+
 
     return(
       <div className="">
@@ -157,8 +163,7 @@ function SeatsReservation(props) {
         <div className="reserv-info">
           <div>Movie: {movie.name}</div>
           <div>Ticket price: {
-              ticketTypes.map( 
-                (ticket) => 
+              ticketTypes.map((ticket) => 
                 <span key={ticket.id}>
                   <br/>{ticket.name} - {ticket.price}$ 
                 </span> 

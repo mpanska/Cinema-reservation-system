@@ -8,10 +8,13 @@ function Navbar() {
 
   return (
     <div className="Navbar">
-      <img src={logo} alt="cinema logo" className="logo"></img>
+      <div style={{display: 'flex'}}>
+        <img src={logo} alt="cinema logo" className="logo"></img>
       
-      <NavLink to='/'> Home </NavLink>
-      <NavLink to='/news'> News </NavLink>
+        <NavLink style={{margin: '20px'}} to='/'> Home </NavLink>
+      </div>
+
+      
         
         {currentUser ? (
           <NavLink to={"/profile"} className="nav-link">

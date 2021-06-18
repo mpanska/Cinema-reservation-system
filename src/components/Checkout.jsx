@@ -11,14 +11,14 @@ function Checkout() {
   const showId = location.state.showId
   const ticketTypeId = location.state.ticketTypeId
 
-  console.log(location.state)
 
-  // const transactionSuccess = (selectedSeats) => {
-  //   movieService.buyTicket(selectedSeats)
-  // }
+  const ID = () => {
+    let string =  '_' + Math.random().toString(36).substr(2, 30)
+    return string
+  }
+
 
   const handleReservation = () =>{
-
     selectedSeats.forEach(seat => {
       console.log(seat.id)
       let data = [{
@@ -27,7 +27,6 @@ function Checkout() {
         "seatId": seat.id,
         "ticketTypeId": ticketTypeId
       }]
-      console.log(data);
 
       movieService.reserveSeat(data).then(
         response => {console.log(response.data)},
@@ -36,33 +35,65 @@ function Checkout() {
     });
   }
 
+
+
   return (
     <div className="page">
       <h2>Your seats:</h2>
-        {selectedSeats.map(
-          seat => <div key={seat.id}> 
-            Row: {seat.row} | Seat number: {seat.number}
-            <br/>
-          </div>
-        )}
-        <h3>Total: {total}$</h3>
+      <div>
+        <table className="ticket-table">
+          <thead className="thead-dark">
+            <tr>
+              <th>Seat number</th>
+              <th>Row</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {selectedSeats.map(( listValue, index ) => {
+            return (
+              <tr key={index}>
+                <td>{listValue.number}</td>
+                <td>{listValue.row}</td>
+                <td>{price}</td>
+              </tr>
+            );
+        })} 
+          </tbody>
+        </table>
+      </div>
+
+
+      <h3>Total: {total}$</h3>
         
-        <Link  to={{
-          pathname:"/success", 
-          state:{ 
-            selectedSeats: selectedSeats,
-            total: total,
-            price: price,
-            showId: showId,
-            ticketTypeId: ticketTypeId
-          }}}
-        >
-          <button onClick={handleReservation} style={{borderRadius: '20px', padding:'10px', marginBottom:'20px'}} className="login-btn"> Only reservation, payment in the cinema  </button>
-        </Link>
-        {/* <Paypal 
-          toPay={total} 
-          onSuccess={transactionSuccess(selectedSeats)} 
-        /> */}
+      <Link to={{
+        pathname:"/success", 
+        state:{ 
+          selectedSeats: selectedSeats,
+          total: total,
+          price: price,
+          showId: showId,
+          ticketTypeId: ticketTypeId,
+          payed: false,
+          ticketId: ID()
+        }}}
+      >
+        <button onClick={handleReservation} style={{borderRadius: '20px', padding:'10px', marginBottom:'20px'}} className="login-btn"> Only reservation, payment in the cinema  </button>
+      </Link>
+
+
+      <Paypal 
+        total={total} 
+        state={{
+          selectedSeats: selectedSeats,
+          total: total,
+          price: price,
+          showId: showId,
+          ticketTypeId: ticketTypeId,
+          payed: true,
+          ticketId: ID()
+        }}
+      />
     </div>
   );
 }
