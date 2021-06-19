@@ -20,7 +20,6 @@ function Checkout() {
 
   const handleReservation = () =>{
     selectedSeats.forEach(seat => {
-      console.log(seat.id)
       let data = [{
         "price": price,
         "showId": showId,
@@ -29,6 +28,22 @@ function Checkout() {
       }]
 
       movieService.reserveSeat(data).then(
+        response => {console.log(response.data)},
+        error => {console.log('error ' + error)}
+      )
+    });
+  }
+
+  const handleBuying = () =>{
+    selectedSeats.forEach(seat => {
+      let data = [{
+        "price": price,
+        "showId": showId,
+        "seatId": seat.id,
+        "ticketTypeId": ticketTypeId
+      }]
+
+      movieService.buyTicket(data).then(
         response => {console.log(response.data)},
         error => {console.log('error ' + error)}
       )

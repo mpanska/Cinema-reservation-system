@@ -31,9 +31,11 @@ class movieService{
         return await axios.get(`http://localhost:8080/api/ticketTypes`)
     }
 
-    // buyTicket(data){
-    //     return axios.post(`http://localhost:8080/api/buyTicket`, data)
-    // }
+    async buyTicket(data){
+        return await axios.post(
+            `http://localhost:8080/api/buyTicket`, data, {headers: {'Authorization': 'Bearer ' + getCurrentUser().jwt}}
+        )
+    }
 
     async reserveSeat(data){
         return await axios.post(

@@ -25,7 +25,7 @@ function Home(props) {
               movies.map(
                 movie =>
                   <div key = {movie.id} className="card"> 
-                    <img src={placeholder} alt="film-img" className="movie-image"/>
+                    <img src={movie.imageFileName} alt="film-img" className="movie-image"/>
                     <div style={{fontSize: "18px", fontWeight: "bold", marginBottom: "10px"}}>
                       {movie.name}
                     </div>

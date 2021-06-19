@@ -169,7 +169,7 @@ function SeatsReservation(props) {
                 </span> 
               )
             }<br/>
-            <select value={localStorage.getItem('type')} onChange={(e) => (handleSelectChange(e))}>
+            <select className="ticket-type" value={localStorage.getItem('type')} onChange={(e) => (handleSelectChange(e))}>
               <option value="normal">Normal</option>
               <option value="student">Student</option>
             </select>

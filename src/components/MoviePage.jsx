@@ -5,6 +5,7 @@ import trailer from '../static/trailer-placeholder.png'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
+import YoutubeEmbed from './YoutubeEmbed';
 
 function MoviePage(props) {
 
@@ -46,9 +47,7 @@ function MoviePage(props) {
   return (
     <div className="page">
       <div className="info-section">
-        <div className="right-side">
-          <img src={placeholder} alt="film-img" className="movie-details-image"/>
-        </div>
+        <img src={movies.imageFileName} alt="film-img" className="movie-details-image"/>
         <div className="left-side">
           <div>{movies.name}</div>
           <hr/>
@@ -58,7 +57,7 @@ function MoviePage(props) {
           <hr/>
           <div>{movies.description}</div>
           <hr/>
-          <img src={trailer} alt="film-trailer" style={{width: "640px"}}/>
+          <YoutubeEmbed embedId={movies.trailer}/>
         </div>
       </div>
 
@@ -67,7 +66,7 @@ function MoviePage(props) {
         <h1>Buy ticket</h1>
           
         {/* <DatePicker selected={show.date} onChange={date => setStartDate(show.date)} /> */}
-        <div className="date-item"> {withoutTime()} </div>
+        <div className="date-item"> {show.date} </div>
 
 
         <div className="times">

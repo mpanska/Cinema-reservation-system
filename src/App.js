@@ -29,7 +29,6 @@ function App() {
 
           <Route path='/checkout' exact component={Checkout} />
           <Route path='/success' exact component={ResevSuccess} />
-
         </Switch>
       </Router>
 

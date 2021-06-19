@@ -1,5 +1,6 @@
-import { useRef, useEffect } from "react";
-import { useHistory} from "react-router-dom";
+import { useRef, useEffect } from "react"
+import { useHistory} from "react-router-dom"
+import movieService from '../services/movieService'
 
 export default function Paypal(props) {
     const total = props.total;
@@ -8,10 +9,25 @@ export default function Paypal(props) {
     const showId = props.state.showId
     const ticketTypeId = props.state.ticketTypeId
     const ticketId = props.state.ticketId
+    const paypal = useRef()
+    let history = useHistory()
 
 
-    const paypal = useRef();
-    let history = useHistory();
+    const handleBuying = () =>{
+        selectedSeats.forEach(seat => {
+            let data = [{
+                "price": price,
+                "showId": showId,
+                "seatId": seat.id,
+                "ticketTypeId": ticketTypeId
+            }]
+    
+            movieService.buyTicket(data).then(
+                response => {console.log(response.data)},
+                error => {console.log('error ' + error)}
+            )
+        });
+    }
 
     useEffect(() => {
         window.paypal.Buttons({
@@ -29,7 +45,8 @@ export default function Paypal(props) {
         },
         onApprove: async (data, actions) => {
             const order = await actions.order.capture();
-          
+            handleBuying()
+
             history.push({
                 pathname: "/success", 
                 state: {

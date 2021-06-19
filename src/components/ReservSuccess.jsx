@@ -116,19 +116,15 @@ function ResevSuccess(props) {
                   <th>Total</th>
                 </tr>
             </thead>
-            <tbody>
-              {selectedSeats.map(( listValue, index ) => {  
-              return (
-                <tr key={index}>
+            <tbody> 
+              <tr>
                 <td>{order.id}</td>
                 <td>{order.status}</td>
                 <td>{order.update_time}</td>
                 <td>{getPayer().email_address}</td>
                 <td>{getPayerName().given_name} {getPayerName().surname}</td>
                 <td>{total}$</td>
-                </tr>
-              );
-              }  )} 
+              </tr>
             </tbody>
           </table>
           </div>
